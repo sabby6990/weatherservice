@@ -24,7 +24,11 @@ import com.weather.model.Response;
 import com.weather.model.WeatherRequest;
 import com.weather.util.FileUtil;
 import com.weather.util.RestClient;
-
+/*
+ * @author saurabh
+ * 
+ * Weather service web service
+ * */
 @RestController
 public class WeatherServiceRest {
 
