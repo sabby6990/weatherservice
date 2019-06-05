@@ -2,11 +2,16 @@ package com.weather.runner;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +45,8 @@ public class WeatherServiceRest {
     	StringBuffer fileNameBuffer = new StringBuffer();
     	
     	
+    	String fileName="";
+    	String rootPath = System.getProperty("user.dir");
     	   if (!file.isEmpty()) { 
     	        try { 
     	            byte[] bytes = file.getBytes();     
@@ -60,6 +67,16 @@ public class WeatherServiceRest {
     	            	queryParam.queryParam("q", cities);
     	            	
     	            	ResponseEntity<String> sendGetRequest = restClient.sendGetRequest(requestobject, String.class, queryParam);
+    	            	
+    	            	if(sendGetRequest.getStatusCode()==HttpStatus.OK)
+    	            	{
+    	            		try {
+								createFile(rootPath,cities,sendGetRequest.getBody());
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+    	            	}
     	            	jsonResponses.add(sendGetRequest.getBody());
     	            	
     	            });
@@ -69,13 +86,8 @@ public class WeatherServiceRest {
     	            fileNameBuffer.append(OUTPUTFOLDER);
     	            
     	            
-	            	String rootPath = System.getProperty("user.dir");
-	            	System.out.println(rootPath);
-	            	String filePathName =rootPath+OUTPUTFOLDER+"test.txt";
-	            	File file1 = new File(filePathName);
-	            	//Below commented line is what you wish to do. But I recommend not to do so.
-	            	//File file = new File(StringUtils.join(rootPath, "/out/resources/file/" , "test.xml"));
-	            	file1.createNewFile();
+
+
 	            	
     	            return jsonResponses; 
     	        } catch (Exception e) { 
@@ -87,7 +99,19 @@ public class WeatherServiceRest {
     }
     
     
-    private static void generateFile(String stringToWrite, String outputFile) {
+    private static void createFile(String rootPath,String city,String content) throws IOException{
+    	   Date date = new Date();  
+    	    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");  
+    	    String strDate= formatter.format(date);  
+    	
+    	String filePathName =rootPath+OUTPUTFOLDER+""+city+strDate+".json";
+    	File file1 = new File(filePathName);
+    	file1.createNewFile();
+    	
+    	writeToFile(content, filePathName);
+    }
+    
+    private static void writeToFile(String stringToWrite, String outputFile) {
     	try {       
     	    FileWriter writer = new FileWriter(outputFile);
     	    writer.append(stringToWrite);
