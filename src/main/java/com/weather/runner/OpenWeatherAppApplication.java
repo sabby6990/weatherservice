@@ -3,7 +3,7 @@ package com.weather.runner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages={"com.weather.restutil","com.weather.model","com.weather.runner"})
 public class OpenWeatherAppApplication {
 
 	public static void main(String[] args) {
