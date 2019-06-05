@@ -40,11 +40,9 @@ public class WeatherServiceRest {
     
     @PostMapping("/uploadCities")
     public List<String> uploadCities(@RequestParam("file") MultipartFile file) {
+    	
+    	
     	List<String> jsonResponses = new ArrayList<>();
-    	
-    	StringBuffer fileNameBuffer = new StringBuffer();
-    	
-    	
     	String fileName="";
     	String rootPath = System.getProperty("user.dir");
     	   if (!file.isEmpty()) { 
@@ -56,18 +54,14 @@ public class WeatherServiceRest {
     	            // convert JSON string to Map
     	            Map<String, Integer> map = mapper.readValue(content, Map.class);
     	            
-    	    		UriComponentsBuilder queryParam = UriComponentsBuilder.fromHttpUrl("http://api.openweathermap.org/data/2.5/weather")
-    	    		        .queryParam("appid","aa69195559bd4f88d79f9aadeb77a8f6");
+
     	    		
     	            map.forEach((cities,ids) -> {
     	            	System.out.println(cities + " = "+ ids );
-    	            	WeatherRequest requestobject = new WeatherRequest();
-    	            	requestobject.setQ(cities);
-    	            	requestobject.setAppid("aa69195559bd4f88d79f9aadeb77a8f6");
-    	            	queryParam.queryParam("q", cities);
-    	            	
-    	            	ResponseEntity<String> sendGetRequest = restClient.sendGetRequest(requestobject, String.class, queryParam);
-    	            	
+        	    		UriComponentsBuilder queryParam = UriComponentsBuilder.fromHttpUrl("http://api.openweathermap.org/data/2.5/weather")
+        	    				.queryParam("q", cities)
+        	    				.queryParam("appid","aa69195559bd4f88d79f9aadeb77a8f6");
+    	            	ResponseEntity<String> sendGetRequest = restClient.sendGetRequest(String.class, queryParam);
     	            	if(sendGetRequest.getStatusCode()==HttpStatus.OK)
     	            	{
     	            		try {
@@ -80,21 +74,14 @@ public class WeatherServiceRest {
     	            	jsonResponses.add(sendGetRequest.getBody());
     	            	
     	            });
-    	            
-    	            
-    	            fileNameBuffer.append(System.getProperty("user.dir"));
-    	            fileNameBuffer.append(OUTPUTFOLDER);
-    	            
-    	            
-
-
-	            	
     	            return jsonResponses; 
     	        } catch (Exception e) { 
     	        	e.printStackTrace();
     	            return null; 
     	        } 
     	    }
+    	   
+    	   
 		return null;
     }
     
@@ -105,8 +92,8 @@ public class WeatherServiceRest {
     	    String strDate= formatter.format(date);  
     	
     	String filePathName =rootPath+OUTPUTFOLDER+""+city+strDate+".json";
-    	File file1 = new File(filePathName);
-    	file1.createNewFile();
+/*    	File file1 = new File(filePathName);
+    	file1.createNewFile();*/
     	
     	writeToFile(content, filePathName);
     }

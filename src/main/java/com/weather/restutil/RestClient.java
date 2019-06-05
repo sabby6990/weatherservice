@@ -77,10 +77,8 @@ public class RestClient<R, T> {
 	 *            uri with query parameters
 	 * @return
 	 */
-	public ResponseEntity<T> sendGetRequest(R request, Class<T> typeParameterClass, UriComponentsBuilder builder) {
-
-		HttpEntity<R> requestBody = new HttpEntity<>(request, headers);
-		ResponseEntity<T> exchange = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, requestBody,
+	public ResponseEntity<T> sendGetRequest(Class<T> typeParameterClass, UriComponentsBuilder builder) {
+		ResponseEntity<T> exchange = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, null,
 				typeParameterClass);
 		return exchange;
 
