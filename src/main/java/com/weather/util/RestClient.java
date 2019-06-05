@@ -1,4 +1,4 @@
-package com.weather.restutil;
+package com.weather.util;
 
 import javax.annotation.PostConstruct;
 
