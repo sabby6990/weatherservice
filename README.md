@@ -15,6 +15,7 @@ in order to change the logging level simple change the log level in the applicat
 * using eclipse simply run the project as spring boot application
 * using command line simply run the jar present in the target folder after building the application using maven:
 
+java -jar target/OpenWeatherApp-0.0.1-SNAPSHOT.jar
 
 
 #How to build
