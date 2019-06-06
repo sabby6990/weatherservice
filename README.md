@@ -17,9 +17,14 @@ in order to change the logging level simple change the log level in the applicat
 
 java -jar target/OpenWeatherApp-0.0.1-SNAPSHOT.jar
 
+# how to test
+use curl command to hit the webservice at localhost:8080/uploadcities with post request
+with no basic authentication so far (for now no username password need to implement springsecuritycontext for Oauth authentication for services due to limited time.)
+
+or you can use postman service with http://localhost:8080/uploadCities as port request url and select form-data --> key = file value = choose file.
 
 #How to build
 run bellow commands
-1) mvn clean 
+1) mvn clean
 2) mvn clean install
 
